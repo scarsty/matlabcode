@@ -2,3 +2,7 @@
 *.png
 *.
 *.lammpstrj
+*out
+*stat_result_file
+*.tar
+velocity_radius
