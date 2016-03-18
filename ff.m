@@ -1,10 +1,10 @@
 % ff
 % surface energy for FCC
 clear
-u2=2/sqrt(3);
+u2=1.1;
 u3=1;
-u2=3*sqrt(2)/4;
-u3=2*sqrt(3)/4;
+%u2=3*sqrt(2)/4;
+%u3=2*sqrt(3)/4;
 % ----------------------
 for i=1:101
     for j=1:101
