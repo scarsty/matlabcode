@@ -3,7 +3,7 @@ xs=1;
 if xs==0
     a=s(:,7:9);
 else
-a=s(:,2:4);
+    a=s(:,2:4);
 end
 
 
@@ -33,39 +33,48 @@ b=(b+b1)/2;
 
 c=imresize(b,20,'bicubic');
 
-%contour(c)
-fig = figure;
-imagesc(c);
-%colormap(fig,'jet')
-l=size(c);
-axis equal
-xlim([1 l(1)]);
-ylim([1 l(1)]);
-axis off
 if xs==1
-    colorbar('fontsize',20)
+    c=c(91:180,91:180);
+    fig = figure;
+    mesh(c);
+    l=size(c);
+    xlim([1 l(1)]);
+    ylim([1 l(1)]);
+    zlim([0 15]);
+    set(gca,'XTick',[1 90])
+    set(gca,'YTick',[1 90])
+    set(gca,'XTickLabel',{0,'\pi'})
+    set(gca,'YTickLabel',{0,'\pi'})
+    set(gca,'fontsize',15)
+else
+    %contour(c)
+    fig = figure;
+    imagesc(c);
+    %colormap(fig,'jet')
+    l=size(c);
+    axis equal
+    xlim([1 l(1)]);
+    ylim([1 l(1)]);
+    axis off
 end
 print(fig,'-r300','-dpng','t.png');
 
 RGB=imread('t.png');
 
+% cut off the white edges
 [l,m,n]=size(RGB);
-x0=-1;
-y0=-1;
+x0=l;
+y0=m;
 x1=-1;
 y1=-1;
-find0=0;
 for i=1:l;
     for j=1:m;
         %sum(RGB(i,j,:))
         if sum(RGB(i,j,:))~=255*3
             x1=max(i,x1);
             y1=max(j,y1);
-            if find0==0
-                x0=x1;
-                y0=y1;
-            end
-            find0=1;
+            x0=min(i,x0);
+            y0=min(j,y0);
         end
     end
 end
