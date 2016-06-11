@@ -1,3 +1,4 @@
+%寻找边界
 I = imread('1.tif');
 
 se = strel('disk',2);

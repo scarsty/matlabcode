@@ -1,3 +1,4 @@
+%画flex的输出图
 xs=1;
 % 1 - chi_s, 0 - gap function
 if xs==0
@@ -40,15 +41,18 @@ if xs==1
     l=size(c);
     xlim([1 l(1)]);
     ylim([1 l(1)]);
-    zlim([0 15]);
+    zlim([1 3]);
     set(gca,'XTick',[1 90])
     set(gca,'YTick',[1 90])
     set(gca,'XTickLabel',{0,'\pi'})
     set(gca,'YTickLabel',{0,'\pi'})
-    set(gca,'fontsize',15)
+    set(gca,'fontsize',35)
+    set(gca,'fontname','times new roman')
 else
     %contour(c)
+    %c=c2;
     fig = figure;
+    c=c/max(max(c));
     imagesc(c);
     %colormap(fig,'jet')
     l=size(c);
@@ -56,6 +60,9 @@ else
     xlim([1 l(1)]);
     ylim([1 l(1)]);
     axis off
+    colorbar();
+    set(gca,'fontsize',19)
+    set(gca,'fontname','times new roman')
 end
 print(fig,'-r300','-dpng','t.png');
 

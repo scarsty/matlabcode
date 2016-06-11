@@ -1,3 +1,4 @@
+%坐标转换
 function y=dealx(x,d,a)
 % three crystalline surface
 if d==100

@@ -1,3 +1,5 @@
+%fft测试
+
 [m n]=size(A);
 N=1000;
 R=zeros(N,2);
