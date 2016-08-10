@@ -1,4 +1,4 @@
-%ç”»flexçš„è¾“å‡ºå›¾
+%»­flexµÄÊä³öÍ¼
 xs=1;
 % 1 - chi_s, 0 - gap function
 if xs==0
