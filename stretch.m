@@ -4,7 +4,7 @@ t0=double(imread('t0.bmp'))/255;%standard image
 t1d=double(imread('t1d.bmp'))/255;%deformed image with other info
 
 %find
-diffm = 3;
+diffm = 1;
 [m0,n0] = size(t0);
 M_t0 = m0*n0;
 %transfer t0 to vector b
