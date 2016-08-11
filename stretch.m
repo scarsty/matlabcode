@@ -24,16 +24,15 @@ for i0=1:m0
             id=i1+k;
             if id>=1 && id<=m1
                 count=count+1;
-                %todo: unfinished, seems not right
                 ii(count)=i0+(j-1)*m0;
-                jj(count)=id+(j-1)*m1;
-                ss(count)=t1d(i0,j);
+                jj(count)=id+(i0-1)*m1;
+                ss(count)=t1d(id,j);
             end
         end
     end
 end
 toc
-X_SP=sparse(ii(1:count),jj(1:count),ss(1:count),m0*n1,m0*m1);
+X_SP=sparse(ii(1:count),jj(1:count),ss(1:count),m0*n,m0*m1);
 toc
 a=X_SP\b;
 toc
@@ -41,8 +40,14 @@ A=zeros(m0,m1);
 for i0=1:m0
     for i1=1:m1
         %if abs(i1-i0)<=diffm
-            A(i0,i1)=a(i0+(i1-1)*m0);
+        A(i0,i1)=a(i1+(i0-1)*m1);
         %end
+    end
+end
+for i0=1:m0
+    s=sum(A(i0,:));
+    if (s~=0)
+        %A(i0,:)=A(i0,:)/abs(s);
     end
 end
 t0d=A*t1d;
