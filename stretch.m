@@ -4,7 +4,7 @@ t0=double(imread('t0.bmp'))/255;%standard image
 t1d=double(imread('t1d.bmp'))/255;%deformed image with other info
 
 %find
-diffm = 10;
+diffm = 3;
 [m0,n0] = size(t0);
 M_t0 = m0*n0;
 %transfer t0 to vector b
@@ -25,7 +25,7 @@ for i0=1:m0
             if id>=1 && id<=m1
                 count=count+1;
                 ii(count)=i0+(j-1)*m0;
-                jj(count)=id+(i0-1)*m1;
+                jj(count)=i0+(id-1)*m0;
                 ss(count)=t1d(id,j);
             end
         end
@@ -40,14 +40,14 @@ A=zeros(m0,m1);
 for i0=1:m0
     for i1=1:m1
         %if abs(i1-i0)<=diffm
-        A(i0,i1)=a(i1+(i0-1)*m1);
+        A(i0,i1)=a(i0+(i1-1)*m0);
         %end
     end
 end
 for i0=1:m0
     s=sum(A(i0,:));
     if (s~=0)
-        %A(i0,:)=A(i0,:)/abs(s);
+        A(i0,:)=A(i0,:)/abs(s);
     end
 end
 t0d=A*t1d;
