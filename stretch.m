@@ -16,7 +16,7 @@ plot(s)
 return;
 
 %find
-diffm = 3;
+diffm = 1;
 [m0,n0] = size(t0);
 M_t0 = m0*n0;
 %transfer t0 to vector b
