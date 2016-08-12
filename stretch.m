@@ -1,7 +1,19 @@
+clear;
 %t1=double(imread('t1.bmp'))/255;
-
 t0=double(imread('t0.bmp'))/255;%standard image
 t1d=double(imread('t1d.bmp'))/255;%deformed image with other info
+
+[m0,n0] = size(t0);
+[m1,n1] = size(t1d);
+
+c=1;
+for i=1:m0
+    r=corrcoef(t0(i,:),t1d(c,:));
+    s(i) = r(1,2);
+end
+plot(s)
+
+return;
 
 %find
 diffm = 3;
