@@ -6,61 +6,31 @@ t1d=double(imread('t1d.bmp'))/255;%deformed image with other info
 [m0,n0] = size(t0);
 [m1,n1] = size(t1d);
 
+t0d=zeros(m0,n0);
+
 c=1;
-for i=1:m0
-    r=corrcoef(t0(i,:),t1d(c,:));
-    s(i) = r(1,2);
+s=zeros(m1,1);
+% ?于模板上的每一行，?找???上最匹配的行
+for i0=1:m0
+    i1d_begin=max(1,c-1);
+    i1d_end=min(m1,i1d_begin+2);
+    p=c;
+    if i1d_begin<=i1d_end
+        for i1d=i1d_begin:i1d_end
+            r=corrcoef(t0(i0,:),t1d(i1d,:));
+            s(i1d) = r(1,2);
+        end
+        [f,p] = max(s(i1d_begin:i1d_end));
+        p=p-1+i1d_begin;
+        t0d(i0,:)=t1d(p,:);
+    end
+    c0=c;
+    c=p+1;
+    if c0>=c
+        c=c0+1;
+    end
 end
-plot(s)
+%plot(s)
+imshow(t0d);
 
 return;
-
-%find
-diffm = 1;
-[m0,n0] = size(t0);
-M_t0 = m0*n0;
-%transfer t0 to vector b
-b=t0(:);
-tic
-[m1,n1] = size(t1d);
-n=n0;
-N = m1*n1*(diffm*2+1);
-ii=zeros(N,1);
-jj=zeros(N,1);
-ss=zeros(N,1);
-count=0;
-for i0=1:m0
-    i1 = int32(i0*m1/m0);
-    for j=1:n
-        for k=-diffm:diffm
-            id=i1+k;
-            if id>=1 && id<=m1
-                count=count+1;
-                ii(count)=i0+(j-1)*m0;
-                jj(count)=i0+(id-1)*m0;
-                ss(count)=t1d(id,j);
-            end
-        end
-    end
-end
-toc
-X_SP=sparse(ii(1:count),jj(1:count),ss(1:count),m0*n,m0*m1);
-toc
-a=X_SP\b;
-toc
-A=zeros(m0,m1);
-for i0=1:m0
-    for i1=1:m1
-        %if abs(i1-i0)<=diffm
-        A(i0,i1)=a(i0+(i1-1)*m0);
-        %end
-    end
-end
-for i0=1:m0
-    s=sum(A(i0,:));
-    if (s~=0)
-        A(i0,:)=A(i0,:)/abs(s);
-    end
-end
-t0d=A*t1d;
-imshow(t0d);
