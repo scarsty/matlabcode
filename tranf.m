@@ -1,3 +1,6 @@
+%transfrom the true images and split them into two parts form training and
+% testing
+
 path = 'C:\dat\caffe\Build\x64\Release\try2\test/';
 fid = fopen([path 'list.txt']);
 list=textscan(fid,'%s %d');
