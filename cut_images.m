@@ -1,15 +1,15 @@
 % 从大图上随机取小图
 
-% prepare the file name list
-path = 'C:\dat\data\Bad\';
-fid = fopen([path '\file.txt']);
-list=textscan(fid,'%s');
-fclose(fid);
-names=list{1};
+n_good=1000;
 
-pathout0 = [path 'sample/0/'];
+path = 'C:\dat\data\20160907-bad\';
+% prepare the file name list
+[names, n] = get_filenames(path);
+
+pathout0 = [path 'sample/0-t/'];
 mkdir(pathout0);
 pathout1 = [path 'sample/1/'];
+pathout2 = [path 'sample/1-1/'];
 mkdir(pathout1);
 
 % region
@@ -19,11 +19,8 @@ y_r0=3000;
 y_r1=20000;
 
 % size of the small image
-l=100;
+l=64;
 
-[n, temp] = size(names);
-
-%
 for i_image=1:n
     tic
     name =[names{i_image}];
@@ -37,28 +34,42 @@ for i_image=1:n
     A = imread([path name]);
     
     % cut the bad regions
-    for j=1:n_defect
+    for j=1:0
+        % origin values
         x0_d=defect_pos(j,1);
         y0_d=defect_pos(j,2);
-        x1_d=x0_d+defect_pos(j,3);
-        y1_d=y0_d+defect_pos(j,4);
+        w_d=defect_pos(j,3);
+        h_d=defect_pos(j,4);
+        x1_d=x0_d+w_d;
+        y1_d=y0_d+h_d;
         
-        x0_2=floor((200-(x1_d-x0_d))/2);
-        y0_2=floor((200-(y1_d-y0_d))/2);
-        
-        x1_2=x0_2+200-1;
-        y1_2=y0_2+200-1;
-        
-        %B=A(y0_2:y1_2,x0_2:x1_2);
+        % here cut the origin defect region
         B=A(y0_d:y1_d,x0_d:x1_d);
-        name2 = [pathout1 name '_' num2str(j) '_' num2str(x0_d) '_' num2str(y0_d) '.bmp'];
-        imwrite(B,name2);
+        name2 = [pathout2 name '_' num2str(j) '_' num2str(x0_d) '_' num2str(y0_d) '.bmp'];
+        %imwrite(B,name2);
+        
+        % here cut some defect region, the step is 50
+        w_dm=floor((w_d+l-1)/l)*l;
+        h_dm=floor((h_d+l-1)/l)*l;
+        x0_dm=floor(x0_d-(w_dm-w_d)/2);
+        y0_dm=floor(y0_d-(h_dm-h_d)/2);
+        x1_dm=x0_dm+w_dm-1;
+        y1_dm=y0_dm+h_dm-1;
+        k=1;
+        for x=(x0_dm):50:(x1_dm+1-l)
+            for y=(y0_dm):50:(y1_dm+1-l)
+                B=A(y:(y+l-1),x:(x+l-1));
+                name2 = [pathout1 name '_' num2str(j) '_' num2str(x) '_' num2str(y) '.bmp'];
+                imwrite(B,name2);
+                k=k+1;
+            end
+        end
     end
     
     
     % cut some good regions
     i=1;
-    while i<=500
+    while i<=n_good
         x0=unidrnd(x_r1-x_r0)+x_r0;
         y0=unidrnd(y_r1-y_r0)+y_r0;
         x1=x0+l-1;
