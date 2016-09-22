@@ -1,10 +1,10 @@
 %transform images
 
 % prepare the file name list
-path = 'C:\dat\data\Train\sample\1\';
+path = 'C:\dat\data\train\sample\1\';
 [names, n] = get_filenames(path);
 
-rotate=0;
+rotate=1;
 
 for i_image=1:n*rotate
     tic

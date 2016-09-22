@@ -1,12 +1,16 @@
 %conbine images by list file
 function combine_images(path, w, h, c)
 % prepare the file name list
-[names, n] = get_filenames(path);
+fid = fopen([path 'file.txt']);
+list=textscan(fid,'%s %d');
+fclose(fid);
+names=list{1};
+[n,~]=size(names);
 
 %w = 64;
 %h = 64;
 %c=1;
-% easy to combine  
+% easy to combine
 fid2 = fopen([path 'file.bin'], 'wb');
 
 
@@ -19,6 +23,7 @@ tic
 for i_image=1:n
     name =[path names{i_image}];
     A = transpose(imread(name));
+    %J = histeq(A);
     fwrite(fid2,A,'uint8');
     if mod(i_image, 1000)==0
         fprintf('%d images\n', i_image);

@@ -2,26 +2,26 @@
 
 n_good=1000;
 
-path = 'C:\dat\data\20160907-bad\';
+path = 'C:\dat\data\train\';
 % prepare the file name list
 [names, n] = get_filenames(path);
 
-pathout0 = [path 'sample/0-t/'];
+pathout0 = [path 'sample/0/'];
 mkdir(pathout0);
 pathout1 = [path 'sample/1/'];
 pathout2 = [path 'sample/1-1/'];
-mkdir(pathout1);
+%mkdir(pathout1);
 
 % region
-x_r0=2000;
-x_r1=13000;
+x_r0=4000;
+x_r1=12000;
 y_r0=3000;
 y_r1=20000;
 
 % size of the small image
 l=64;
 
-for i_image=1:n
+parfor i_image=1:n
     tic
     name =[names{i_image}];
     defect_name = [path 'QCdefect\' name '_defect.txt'];
@@ -87,10 +87,19 @@ for i_image=1:n
                 in = 1;
             end
         end
+        % keep away from the defect
         if in==1
             continue
         end
         B=A(y0:y1,x0:x1);
+        % avoid too black
+        if mean(mean(B))<10 || max(max(B)) > 100
+            continue
+        end
+        %no light 
+        if max(max(B))<=100
+            %continue
+        end
         name2 = [pathout0 name '_' num2str(i) '_' num2str(x0) '_' num2str(y0) '.bmp'];
         imwrite(B,name2);
         i=i+1;
