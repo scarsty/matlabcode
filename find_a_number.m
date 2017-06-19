@@ -24,7 +24,7 @@ k(3)=sum(b(int32(m*1/3), int32(n/2:n)));
 k(5)=sum(b(int32(m*2/3), int32(1:n/2)));
 k(6)=sum(b(int32(m*2/3), int32(n/2:n)));
 %k
-kk=int32(k>40);
+kk=int32(k>15);
 
 
 r=0;
