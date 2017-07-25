@@ -1,12 +1,12 @@
-defectDir = 'C:\dat\abs\1\'
-maskDir = 'C:\dat\abs\1\';
-outDir = 'C:\Users\sb\Desktop\labeltxt\11\';
-oriDir = 'V:\data\slider ABS 5 projects + HGA 1 project\GIJ770-NG-1000\';
-txtDir = 'C:\Users\sb\Desktop\labeltxt\';
+defectDir = 'Z:\biel\#3\20170601\defects\'
+maskDir = 'Z:\biel\#3\20170601\defects\';
+outDir = 'C:\Users\sb\Desktop\2\';
+oriDir = 'Z:\biel\#3\20170601\';
+txtDir = 'Z:\biel\#3\20170601\';
 
-[defectNames,defectN] = get_filenames(defectDir,'*.png');
+[defectNames,defectN] = get_filenames(defectDir,'*.png')
 minSize = 192
-for i = 1980:defectN
+for i = 1:defectN
     defectName = [defectNames{i}];
     k = strfind( defectName,'_mask.png');
     if k>0
@@ -22,8 +22,8 @@ for i = 1980:defectN
     COOR=dlmread(txtName,',');
     B = double(rgb2gray(imread(defectNameWithPath)));
     [r,c] = size(B);
-    r0=r;
-    c0=c;
+    r1=r;
+    c1=c;
     %defectName(end-5:end-4)
     line=int32(str2double(defectName(end-4:end-4)))+1;
     [COORr,COORc]=size(COOR);
@@ -32,6 +32,8 @@ for i = 1980:defectN
     end
     m=COOR(line,2);
     n=COOR(line,1);
+    r0=COOR(line,4);
+    c0=COOR(line,3);
     if exist(oriNameWithPath,'file')==0
         continue;
     end
@@ -69,16 +71,20 @@ for i = 1980:defectN
     %         end
     md=0;
     nd=0;
+    md1=0;
+    nd1=0;
     %m=m-1;
     %n=n-1;
     if r<minSize
         r=minSize;
         md=floor((minSize-r0)/2);
+        md1=floor((minSize-r1)/2);
         m=m-md;
     end
     if c<minSize
         c=minSize;
         nd=floor((minSize-c0)/2);
+        nd1=floor((minSize-c1)/2);
         n=n-nd;
     end
     if m<=0 || n<=0
@@ -86,7 +92,7 @@ for i = 1980:defectN
     end
     M=zeros(r,c);
     M0=imread([defectNameWithPath(1:end-4) '_mask.png']);
-    M(1+md:md+r0,1+nd:nd+c0)=M0;
+    M(1+md1:md1+r1,1+nd1:nd1+c1)=M0;
     %AA=A(m:m+r-1,n:n+c-1);
     imwrite(A0(m:m+r-1,n:n+c-1,:), [outDir oriName '_' num2str(m) '_' num2str(n) '_.png']);
     imwrite(M, [outDir oriName '_' num2str(m) '_' num2str(n) '_.png_mask.png']);

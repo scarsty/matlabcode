@@ -1,14 +1,16 @@
-
+clear;
 N=900;
 f=zeros(2,4);
 m0=1;
 m1=0;
 for c=1:N
-    name=['C:\Users\sb\Desktop\dabian\020\' num2str(c) '.jpg'];
+    name=['C:\Users\sb\Desktop\dabian\PDMS-6000-step\' num2str(c) '.jpg'];
     if exist(name,'file')==0
         break;
     end
     A = rgb2gray(imread(name));
+    %A=imrotate(A,90);
+    %A=A(:,120:end);
     [m n]=size(A);
 %     if c==1
 %         for i=1:m-1
@@ -20,12 +22,9 @@ for c=1:N
 %             end
 %         end
 %     end
-    [m n] = size(B);
+%    [m n] = size(B);
     half=int32(n/2);
-    B=A<80;
-    mb=39;
-    nb=597;
-    B(mb:end,nb:end)=A(mb:end,nb:end)<50;
+    B=A<120;
     %B=[A(:,1:half)<80 A(:,half+1:end)<50];
     r=zeros(1,4);
     n4=int32(n/4);
